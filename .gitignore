@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.venv
+env/
+venv/
+ENV/
+.venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Logs
+*.log
+
+# SQLite database files
+*.sqlite3
+*.db
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Linux
+*.swp
+*~
+
+# Python history
+.python_history
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# FastAPI / Uvicorn / Starlette temporary files
+*.pid
+*.sock
+
+# Ignore system files from home directory accidentally
+*.bash_history
+*.bashrc
+*.zshrc
+*.profile
+
+# Ignore general temporary files
+*.tmp
+*.bak
+*.old
