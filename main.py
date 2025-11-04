@@ -1,10 +1,14 @@
 from fastapi import FastAPI
+from typing import Optional
 
 app = FastAPI()
 
 @app.get("/")
-def index():
-    return{"message":"welcome to FastAPI!"}
+def index(limit=10 ,published:bool=True ,sorted:Optional[bool]=None):
+    if published:
+        return{"message":f"{limit} published welcome to FastAPI!"}
+
+    return{"message":f"{limit} welcome to FastAPI!"}
 
 @app.get("/about")
 def about():
@@ -27,3 +31,4 @@ def comments(id:int, comment_id:int):
 @app.get("/blog/{id}/comments/")
 def comments(id:int):
     return{"comments":{1,2,3,4,5}}
+
