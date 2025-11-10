@@ -4,7 +4,8 @@ from ..database import get_db
 from ..models import BlogModel
 from ..schema import Blog,ShowBlog
 from sqlalchemy.orm import joinedload
-from ..repository.blogs import get_all
+from ..repository.blogs import get_all,get_by_id
+from ..oauth2 import get_current_user
 
 router=APIRouter(
     prefix="/blog",
@@ -12,32 +13,26 @@ router=APIRouter(
 )
 
 
-@router.post("/blog/",status_code=status.HTTP_201_CREATED)
-def create(request:Blog,db:Session=Depends(get_db)):
+@router.post("/",status_code=status.HTTP_201_CREATED)
+def create(request:Blog,db:Session=Depends(get_db),current_user: str = Depends(get_current_user)):
     new_blog=BlogModel(title=request.title,body=request.body,user_id=request.user_id)
     db.add(new_blog)
     db.commit()
     db.refresh(new_blog)
     return new_blog
 
-@router.get("/blog", status_code=status.HTTP_200_OK, response_model=list[ShowBlog])
-def all(db: Session = Depends(get_db)):
+@router.get("/", status_code=status.HTTP_200_OK, response_model=list[ShowBlog])
+def all(db: Session = Depends(get_db),current_user: str = Depends(get_current_user)):
     blogs =get_all(db)  
     return blogs
 
 #get by id
-@router.get("/blog/{id}",response_model=ShowBlog)
-def show(id:int,db:Session=Depends(get_db)):
-    blog=db.query(BlogModel).filter(BlogModel.id==id).first()
-    if not blog:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Blog with the id {id} is not available")
-        # Response(status_code=status.HTTP_404_NOT_FOUND)
-        # return {"detail":f"Blog with the id {id} is not available"}
-    return blog
+@router.get("//{id}",response_model=ShowBlog)
+def show(id:int,db:Session=Depends(get_db),current_user: str = Depends(get_current_user)):
+   blog=get_by_id(db,id)
 
-@router.delete("/blog/{id}",status_code=status.HTTP_204_NO_CONTENT)
-def destroy(id:int,db:Session=Depends(get_db)):
+@router.delete("/{id}",status_code=status.HTTP_204_NO_CONTENT)
+def destroy(id:int,db:Session=Depends(get_db),current_user: str = Depends(get_current_user)):
     new_blog=db.query(BlogModel).filter(BlogModel.id==id)
     if not new_blog.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -46,8 +41,8 @@ def destroy(id:int,db:Session=Depends(get_db)):
     db.commit() 
     
 
-@router.patch("/blog/{id}",status_code=status.HTTP_202_ACCEPTED)
-def update(id:int,request:Blog,db:Session=Depends(get_db)):
+@router.patch("/{id}",status_code=status.HTTP_202_ACCEPTED)
+def update(id:int,request:Blog,db:Session=Depends(get_db),current_user: str = Depends(get_current_user)):
     blog=db.query(BlogModel).filter(BlogModel.id==id).first()
     if not blog:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

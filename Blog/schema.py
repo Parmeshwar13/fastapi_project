@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class ShowUser(BaseModel):
     name:str
@@ -32,3 +33,14 @@ class User(BaseModel):
     password:str
     class Config:
         orm_mode = True 
+
+class Login(BaseModel):
+    email:str
+    password:str
+
+class Token(BaseModel):
+    access_token:str
+    token_type:str
+
+class TokenData(BaseModel):
+    email:Optional[str]=None

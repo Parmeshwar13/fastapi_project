@@ -2,7 +2,7 @@ from fastapi import FastAPI
 app = FastAPI()
 from .database import Base, engine
 from sqlalchemy import inspect
-from .routers import blogs, users
+from .routers import blogs, users,auth
 
 
 # Base.metadata.drop_all(bind=engine)
@@ -12,6 +12,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(blogs.router)
 app.include_router(users.router)
+app.include_router(auth.router)
 
 @app.on_event("startup")
 def show_tables():
