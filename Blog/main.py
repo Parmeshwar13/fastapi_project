@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 app = FastAPI()
-from .database import Base, engine
+from database import Base, engine
 from sqlalchemy import inspect
-from .routers import blogs, users,auth
+from routers import blogs, users,auth
 
 
 # Base.metadata.drop_all(bind=engine)

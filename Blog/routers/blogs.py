@@ -1,11 +1,11 @@
 from fastapi import APIRouter,Depends,HTTPException,status
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models import BlogModel
-from ..schema import Blog,ShowBlog
+from database import get_db
+from models import BlogModel
+from schema import Blog,ShowBlog
 from sqlalchemy.orm import joinedload
-from ..repository.blogs import get_all,get_by_id
-from ..oauth2 import get_current_user
+from repository.blogs import get_all,get_by_id
+from oauth2 import get_current_user
 
 router=APIRouter(
     prefix="/blog",
@@ -27,9 +27,10 @@ def all(db: Session = Depends(get_db),current_user: str = Depends(get_current_us
     return blogs
 
 #get by id
-@router.get("//{id}",response_model=ShowBlog)
+@router.get("/{id}",response_model=ShowBlog)
 def show(id:int,db:Session=Depends(get_db),current_user: str = Depends(get_current_user)):
    blog=get_by_id(db,id)
+   return blog
 
 @router.delete("/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def destroy(id:int,db:Session=Depends(get_db),current_user: str = Depends(get_current_user)):

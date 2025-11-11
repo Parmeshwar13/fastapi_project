@@ -1,4 +1,4 @@
-from  ..models import BlogModel
+from models import BlogModel
 from sqlalchemy.orm import joinedload
 from fastapi import HTTPException,status
 
