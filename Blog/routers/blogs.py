@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import BlogModel
 from schema import Blog,ShowBlog
-from sqlalchemy.orm import joinedload
 from repository.blogs import get_all,get_by_id
 from oauth2 import get_current_user
 
